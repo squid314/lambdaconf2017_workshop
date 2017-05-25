@@ -1,4 +1,4 @@
-package pfp.intro
+package pfp.typeclasses
 
 object Typeclasses {
 
