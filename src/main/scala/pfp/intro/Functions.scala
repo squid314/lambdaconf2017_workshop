@@ -8,10 +8,10 @@ object Functions {
   /** Defining a function */
 
   val func: String => Int = (s: String) => s.length
-  val func_alt: String => Int = ???
+  val func_alt: String => Int = _.length
 
   val func2: (Int, Int) => Int = (i1: Int, i2: Int) => i1 + i2
-  val func2_alt: (Int, Int) => Int = ??? 
+  val func2_alt: (Int, Int) => Int = _ + _ 
 
   /** Using functions */
   val list = List("hello", "world", "!")
@@ -27,10 +27,8 @@ object Functions {
   val g = (x: Int) => x.toString
 
   // h(x) = g(f(x))
-  val h: Int => String = ???
-
-  val h_alt: Int => String = ???
-
+  val h: Int => String = g compose f
+  val h_alt: Int => String = f andThen g
   // operators from ScalaZ
   val hz = g <<< f
   val hz_alt = f >>> g
@@ -47,7 +45,7 @@ object Functions {
   /** Curry */
   val threeArgs: (Int, String, Double) => Long =
     (i, s, d) => i.toLong + s.length.toLong + d.toLong
-  val curried: Int => String => Double => Long = ???
+  val curried: Int => String => Double => Long = threeArgs.curried
   val oneArgApplied: String => Double => Long = curried(10)
 
   /** Parital application */
@@ -66,7 +64,11 @@ object Functions {
   foo.method(10)
 
   /** do they compose */
-  ???
+  val temp: String => Int = _.toInt
+  val a: String => String = temp andThen foo.func
+  val a1: String => String = temp andThen foo.method
+  val a2: Int => Int = foo.func andThen temp
+  val a3: Int => Int = foo.method _ andThen temp
 
   /** methods can be polymorphic */
   def bar[A, B, C](a: A, b: B, make: (A, B) => C): C =
@@ -79,4 +81,8 @@ object Functions {
   def buz[F[_], A](f: F[A], tr: F[A] => A): A = tr(f)
   val buzres1: Int = buz[Option, Int](10.some, _.get)
   val buzres2: String = buz[Option, String]("hello".some, _.get)
+
+  val buz1: Either[String,Int] = ???
+  buz[({type L[a] = Either[String, a]})#L, Int](buz1, _.right.get)
+  buz[Either[String, ?], Int](buz1, _.right.get)
 }

@@ -5,13 +5,15 @@ object Exercise {
   /** Functions */
   // 1. write a function weirdo that takes Int and String as paramteres and adds Int to length of the String
   // val werido: ??? = ???
+  val werido: Int => String => Int = a => s => a + s.length
 
   // 2. implement above but as a method
   // def weirdo(???): ??? = ???
+  def weirdo(a:Int,s:String): Int = a + s.length
 
   // 3. bar = all elements in foo whose length > 4
   val foo = List("hello", "world", "!")
-  val bar = ???
+  val bar = foo filter(_.length > 4)
 
   // 4. write a method tupled that
   // - takes a function f as arguemnt
